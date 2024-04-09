@@ -167,7 +167,7 @@ export default function oAuth(request, authOptions) {
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'json',
       },
-      data: `grant_type=password&username=${user}&password=${password}&client_id=${clientId}&scope=${scope}&client_secret=${clientSecret}`,
+      data: `grant_type=client_credentials&username=${user}&password=${password}&client_id=${clientId}&scope=${scope}&client_secret=${clientSecret}`,
     }).then(res => parseToken(res.data)).catch((error) => { throw error; }),
     getToken,
   };
