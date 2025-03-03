@@ -12,6 +12,7 @@ import axios from 'axios';
  * @param {Object} authOptions
  * @property {String} authOptions.host
  * @property {String} authOptions.clientId
+ * @property {String} authOptions.clientSecret
  * @property {Function} [authOptions.getToken]
  * @property {Function} [authOptions.setToken]
  * @returns {Object}
@@ -21,6 +22,7 @@ export default function oAuth(request, authOptions) {
   const {
     host = '',
     clientId = '',
+    clientSecret = '',
     getToken = () => memToken,
     setToken = (t) => { memToken = t; },
   } = authOptions;
@@ -70,6 +72,7 @@ export default function oAuth(request, authOptions) {
     const refreshParams = new URLSearchParams();
     refreshParams.append('grant_type', 'refresh_token');
     refreshParams.append('client_id', clientId);
+    refreshParams.append('client_secret', clientSecret);
     refreshParams.append('refresh_token', token);
     return axios.post(accessTokenUri, refreshParams)
       .then((res) => {
@@ -163,7 +166,7 @@ export default function oAuth(request, authOptions) {
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'json',
       },
-      data: `grant_type=password&username=${user}&password=${password}&client_id=${clientId}`,
+      data: `grant_type=password&username=${user}&password=${password}&client_id=${clientId}&client_secret=${clientSecret}`,
     }).then(res => parseToken(res.data)).catch((error) => { throw error; }),
     getToken,
   };
