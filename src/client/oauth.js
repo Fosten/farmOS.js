@@ -12,6 +12,7 @@ import axios from 'axios';
  * @param {Object} authOptions
  * @property {String} authOptions.host
  * @property {String} authOptions.clientId
+ * @property {String} authOptions.scope
  * @property {Function} [authOptions.getToken]
  * @property {Function} [authOptions.setToken]
  * @returns {Object}
@@ -21,6 +22,7 @@ export default function oAuth(request, authOptions) {
   const {
     host = '',
     clientId = '',
+    scope = '',
     getToken = () => memToken,
     setToken = (t) => { memToken = t; },
   } = authOptions;
@@ -163,7 +165,7 @@ export default function oAuth(request, authOptions) {
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'json',
       },
-      data: `grant_type=password&username=${user}&password=${password}&client_id=${clientId}`,
+      data: `grant_type=password&username=${user}&password=${password}&client_id=${clientId}&scope=${scope}`,
     }).then(res => parseToken(res.data)).catch((error) => { throw error; }),
     getToken,
   };
